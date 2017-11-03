@@ -23,7 +23,7 @@ from datetime import timedelta
 import logbook
 
 import pandas as pd
-from pandas.io.data import DataReader
+from pandas_datareader.data import DataReader
 import pytz
 
 from six import iteritems
