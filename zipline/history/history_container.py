@@ -405,7 +405,7 @@ class HistoryContainer(object):
                 lows = buffer_minutes.ix['low'].min()
                 rolled.ix['low'] = lows
 
-            for sid, value in rolled.ix[field].iterkv():
+            for sid, value in rolled.ix[field].iteritems():
                 if not np.isnan(value):
                     try:
                         prior_values = \

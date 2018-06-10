@@ -67,7 +67,7 @@ class DataFrameSource(DataSource):
 
     def raw_data_gen(self):
         for dt, series in self.data.iterrows():
-            for sid, price in series.iterkv():
+            for sid, price in series.iteritems():
                 if sid in self.sids:
                     event = {
                         'dt': dt,
@@ -99,7 +99,7 @@ class DataPanelSource(DataSource):
     """
 
     def __init__(self, data, **kwargs):
-        assert isinstance(data.major_axis, pd.tseries.index.DatetimeIndex)
+        assert isinstance(data.major_axis, pd.DatetimeIndex)
 
         self.data = data
         # Unpack config dictionary with default values.
@@ -136,7 +136,7 @@ class DataPanelSource(DataSource):
     def raw_data_gen(self):
         for dt in self.data.major_axis:
             df = self.data.major_xs(dt)
-            for sid, series in df.iterkv():
+            for sid, series in df.iteritems():
                 if sid in self.sids:
                     event = {
                         'dt': dt,

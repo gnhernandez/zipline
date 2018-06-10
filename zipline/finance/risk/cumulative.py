@@ -118,7 +118,7 @@ class RiskMetricsCumulative(object):
 
         last_day = normalize_date(sim_params.period_end)
         if last_day not in self.trading_days:
-            last_day = pd.tseries.index.DatetimeIndex(
+            last_day = pd.DatetimeIndex(
                 [last_day]
             )
             self.trading_days = self.trading_days.append(last_day)

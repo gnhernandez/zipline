@@ -155,6 +155,7 @@ def get_benchmark_filename(symbol):
 
 
 def load_market_data(bm_symbol='^GSPC'):
+    effective_days = trading_days[trading_days >= "2000-01-01"]
     bm_filepath = get_data_filepath(get_benchmark_filename(bm_symbol))
     try:
         saved_benchmarks = pd.Series.from_csv(bm_filepath)
@@ -163,9 +164,9 @@ def load_market_data(bm_symbol='^GSPC'):
 data files aren't distributed with source.
 Fetching data from Yahoo Finance.
 """.strip())
-        dump_benchmarks(bm_symbol)
-        saved_benchmarks = pd.Series.from_csv(bm_filepath)
-
+        #dump_benchmarks(bm_symbol)
+        #saved_benchmarks = pd.Series.from_csv(bm_filepath)
+    saved_benchmarks = pd.Series(data=0.00002, index=effective_days).tz_localize(None)
     saved_benchmarks = saved_benchmarks.tz_localize('UTC')
 
     most_recent = pd.Timestamp('today', tz='UTC') - trading_day
@@ -180,6 +181,7 @@ Fetching data from Yahoo Finance.
 
     # If more than 1 trading days has elapsed since the last day where
     # we have data,then we need to update
+
     if len(days_up_to_now) - last_bm_date_offset > 1:
         benchmark_returns = update_benchmarks(bm_symbol, last_bm_date)
         if (
@@ -210,8 +212,12 @@ Fetching data from Yahoo Finance.
 data files aren't distributed with source.
 Fetching data from {0}
 """.format(source).strip())
-        dump_treasury_curves(module, filename)
-        saved_curves = pd.DataFrame.from_csv(tr_filepath)
+        #dump_treasury_curves(module, filename)
+        #saved_curves = pd.DataFrame.from_csv(tr_filepath)
+
+    saved_curves = pd.DataFrame(0.0001, index=effective_days, columns=['10year', '1month', '1year', '20year', '2year',
+                                                                       '30year', '3month', '3year', '5year', '6month',
+                                                                       '7year', 'date', 'tid']).tz_localize(None)
 
     # Find the offset of the last date for which we have trading data in our
     # list of valid trading days
@@ -227,7 +233,7 @@ Fetching data from {0}
         treasury_curves = saved_curves.tz_localize('UTC')
 
     tr_curves = {}
-    for tr_dt, curve in treasury_curves.T.iterkv():
+    for tr_dt, curve in treasury_curves.T.iteritems():
         # tr_dt = tr_dt.replace(hour=0, minute=0, second=0, microsecond=0,
         #                       tzinfo=pytz.utc)
         tr_curves[tr_dt] = curve.to_dict()
@@ -237,7 +243,6 @@ Fetching data from {0}
         key=lambda t: t[0]))
 
     return benchmark_returns, tr_curves
-
 
 def _load_raw_yahoo_data(indexes=None, stocks=None, start=None, end=None):
     """Load closing prices from yahoo finance.

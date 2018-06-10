@@ -302,7 +302,7 @@ class PerformanceTracker(object):
                 # close, so that calculations are triggered at the right time.
                 # However, risk module uses midnight as the 'day'
                 # marker for returns, so adjust back to midgnight.
-                midnight = pd.tseries.tools.normalize_date(event.dt)
+                midnight = pd.core.tools.datetimes.normalize_date(event.dt)
             else:
                 midnight = event.dt
 
