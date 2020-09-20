@@ -261,7 +261,8 @@ class HistoryContainer(object):
         """
         self.return_frames = {}
         for spec_key, history_spec in iteritems(self.history_specs):
-            index = pd.to_datetime(index_at_dt(history_spec, algo_dt))
+            index = pd.to_datetime(index_at_dt(history_spec, algo_dt),
+                utc=True)
             frame = pd.DataFrame(
                 index=index,
                 columns=self.convert_columns(
@@ -331,7 +332,8 @@ class HistoryContainer(object):
             # spec for a given frequency
             digest_panel = self.digest_panels.get(frequency, None)
 
-            while algo_dt > self.cur_window_closes[frequency]:
+            while np.datetime64(algo_dt) > np.datetime64(
+                    self.cur_window_closes[frequency]):
 
                 earliest_minute = self.cur_window_starts[frequency]
                 latest_minute = self.cur_window_closes[frequency]

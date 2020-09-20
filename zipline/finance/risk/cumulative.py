@@ -22,7 +22,7 @@ from zipline.finance import trading
 import zipline.utils.math_utils as zp_math
 
 import pandas as pd
-from pandas.core.tools.datetimes import normalize_date
+from pandas._libs.tslibs.conversion import normalize_date
 
 from six import iteritems
 

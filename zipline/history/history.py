@@ -128,7 +128,7 @@ class Frequency(object):
         ).market_open.iloc[0]
 
         if self.daily_at_midnight:
-            open_ = pd.tslib.normalize_date(open_)
+            open_ = pd._libs.tslibs.conversion.normalize_date(open_)
 
         return open_
 
@@ -184,7 +184,7 @@ class Frequency(object):
         ).market_close.iloc[0]
 
         if self.daily_at_midnight:
-            close = pd.tslib.normalize_date(close)
+            close = pd._libs.tslibs.conversion.normalize_date(close)
 
         return close
 
@@ -285,12 +285,13 @@ def days_index_at_dt(history_spec, algo_dt):
     ).market_close
 
     if history_spec.frequency.daily_at_midnight:
-        market_closes = market_closes.apply(pd.tslib.normalize_date)
+        market_closes = market_closes.apply(
+            pd._libs.tslibs.conversion.normalize_date)
 
     # Append the current algo_dt as the last index value.
     # Using the 'rawer' numpy array values here because of a bottleneck
     # that appeared when using DatetimeIndex
-    return np.append(market_closes.values, algo_dt)
+    return np.append(market_closes.values, np.datetime64(algo_dt))
 
 
 def minutes_index_at_dt(history_spec, algo_dt):

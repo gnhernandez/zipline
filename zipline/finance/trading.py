@@ -145,7 +145,7 @@ class TradingEnvironment(object):
 
     def normalize_date(self, test_date):
         test_date = pd.Timestamp(test_date, tz='UTC')
-        return pd.core.tools.datetimes.normalize_date(test_date)
+        return pd._libs.tslibs.conversion.normalize_date(test_date)
 
     def utc_dt_in_exchange(self, dt):
         return pd.Timestamp(dt).tz_convert(self.exchange_tz)
