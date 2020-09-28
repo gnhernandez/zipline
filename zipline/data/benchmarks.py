@@ -129,7 +129,7 @@ def get_benchmark_returns(symbol, start_date=None, end_date=None):
         else:
             prev_close = data_points[i - 1]['close']
             returns = (data_point['close'] - prev_close) / prev_close
-        date = pd.tseries.tools.normalize_date(data_point['date'])
+        date = pd._libs.tslib.normalize_date(data_point['date'])
         daily_return = DailyReturn(date=date, returns=returns)
         benchmark_returns.append(daily_return)
 

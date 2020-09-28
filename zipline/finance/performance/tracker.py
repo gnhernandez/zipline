@@ -62,7 +62,7 @@ import logbook
 
 import numpy as np
 import pandas as pd
-from pandas._libs.tslibs.conversion import normalize_date
+from pandas._libs.tslib import normalize_date
 
 import zipline.protocol as zp
 import zipline.finance.risk as risk
